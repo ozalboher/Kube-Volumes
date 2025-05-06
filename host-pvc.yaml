@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: host-pvc # name of the persistent volume claim
+spec:
+  volumeName: host-pv # name of the persistent volume we want to use.
+  accessModes: # access modes for the persistent volume claim
+    - ReadWriteOnce # allows the volume to be mounted as: read-write by a single node (multiple pods but they all have to be on the same node).
+  resources: # resources for the persistent volume claim
+    requests: # resources requested by the persistent volume claim
+      storage: 1Gi # size of the persistent volume claim (1gb or less)
+      

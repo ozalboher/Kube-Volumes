@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: story-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: story
+  template:
+    metadata:
+      labels:
+        app: story 
+    spec:
+      containers:
+        - name: story 
+          image: ozalboher/story-app:1
+          volumeMounts:
+            - name: story-volume
+              mountPath: /app/story # path inside the container where the volume will be mounted (the app knows to look for files saved in a story folder - as defined in the app.js)
+#      volumes:
+#        - name: story-volume
+#          emptyDir: {}    
+#      volumes:
+#        - name: story-volume
+#          hostPath:
+#            path: /data
+#            type: DirectoryOrCreate
+      volumes:
+        - name: story-volume
+          persistentVolumeClaim:
+            claimName: host-pvc # name of the persistent volume claim to use
+       
