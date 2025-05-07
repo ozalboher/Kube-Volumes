@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: story-deployment
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: story
@@ -14,7 +14,14 @@ spec:
     spec:
       containers:
         - name: story 
-          image: ozalboher/story-app:1
+          image: ozalboher/story-app:2
+          env:
+            - name: STORY_FOLDER
+              # value: 'story' # (set this if there is no seperate config map file).
+              valueFrom:
+                configMapKeyRef:
+                  name: data-store-env # what you named in the config map file.
+                  key: folder # the key you named in the config map file.
           volumeMounts:
             - name: story-volume
               mountPath: /app/story # path inside the container where the volume will be mounted (the app knows to look for files saved in a story folder - as defined in the app.js)

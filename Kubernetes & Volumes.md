@@ -55,3 +55,47 @@ containers:
 - In the accessMode option, you can list all the access modes you want to allow for the volume. For example, if you want to allow ReadWriteMany, you can add it to the list. You can define multiple cases -> and when you claim the volume, you can specify which access mode you want to use. 
 - In our learnig case, since minikube is running on a single node, we will use the ReadWriteOnce access mode. which means that the volume can be mounted as read-write by a single node.
 - Not all volume types support all access modes so check if it is supported by the volume type you are using.
+
+# Kubernetes Storage Classes
+- Storage classes are a way to define different types of storage in Kubernetes. They allow you to specify the type of storage you want to use for your persistent volumes. For example, you can define a storage class for SSD storage, HDD storage, or any other type of storage you want to use.
+```bash
+kubectl get sc
+```
+- This command will show you the available storage classes in your Kubernetes cluster. You can use this information to choose the right storage class for your persistent volumes.If working with minikube you will get one storage class called "standard" which is the default storage class. If you are using a cloud provider, you may have multiple storage classes available, each with different characteristics.
+- Setting storageClassName: standard specifies that this resource should use the "standard" storage class, which is typically the default storage provisioner in many Kubernetes environments. The storage class determines important characteristics of the underlying storage, including:
+
+What type of storage is provisioned (SSD, HDD, network storage, etc.)
+What volume binding mode is used
+Reclaim policy (what happens to the data when the PV is released)
+Mount options and other storage-specific parameters.
+* Set storageClassName in both PV and PVC to use the same storage class - standard.
+* Apply changes with first: kubectl apply -f host-pv.yaml and then: kubectl apply -f host-pvc.yaml
+* Check if it is applied and working: 
+```bash
+kubectl get pv
+kubectl get pvc
+```
+# Enironment Variables:
+- You can set environment variables in your deployment.yaml file. Always as a list - and as a key-value pair.like so:
+```yaml
+env:
+  - name: MY_ENV_VAR
+    value: "my_value"
+```
+- we will use this env variable example in this tutorial to replace the hardcoded path in the app.js that points to the story folder(where we use to save the text).
+
+* You can also set env variables from a configMap. Create a new file evironment.yaml and add the key and value under: data object, all of them can sit there with key: value pairs.
+* Apply the changes with: kubectl apply -f environment.yaml
+* Check if it is applied and working: 
+```bash
+kubectl get configmap
+```
+- Now in the deployment.yaml file, you can set the env variable to use the configMap. So instead of the value key that was under the name key, you will use the valueFrom key.
+```yaml
+env:
+  - name: Name_of_the_env_variable
+    valueFrom:
+      configMapKeyRef:
+        name: name_of_the_configMap
+        key: name_of_the_key(in the configMap)
+```

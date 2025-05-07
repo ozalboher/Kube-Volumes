@@ -6,7 +6,8 @@ spec:
   capacity: # size of the persistent volume
     storage: 1Gi # size of the persistent volume(1Gi = 1 gigabyte)
   volumeMode: Filesystem # type of volume (Filesystem or Block)
-  accessModes: # access modes for the persistent volume
+  storageClassName: standard # storage class name (The storage class determines important characteristics)
+  accessModes: # access modes (Node related) for the persistent volume
     - ReadWriteOnce # allows the volume to be mounted as: read-write by a single node (multiple pods but they all have to be on the same node).
     - ReadOnlyMany # allows the volume to be mounted as: read-only by many nodes.
     - ReadWriteMany # allows the volume to be mounted as: read-write by many nodes.

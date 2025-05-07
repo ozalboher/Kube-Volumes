@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: data-store-env
+data:
+  folder: 'story' # name of the folder to save the story files in.
+#  key: 'value' # of course you can add additional key-value pair like so.
